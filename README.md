@@ -1,52 +1,104 @@
-# 📝 Quora Question Pair Duplicate Checker
+# Quora Duplicate Question Detection System
 
-![Python](https://img.shields.io/badge/Python-3.8+-blue?logo=python)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Latest-orange?logo=scikit-learn)
-![Sentence-Transformers](https://img.shields.io/badge/SBERT-All--MiniLM--L6--v2-green)
-![Flask](https://img.shields.io/badge/Framework-Flask/FastAPI-lightgrey)
-
-An end-to-end machine learning solution designed to identify semantically equivalent questions. By combining traditional NLP linguistic features with deep learning embeddings, this tool achieves high-precision duplicate detection for Quora-style datasets.
+A Machine Learning based NLP application that detects whether two questions are duplicates or not, similar to the system used by Quora.  
+The project combines **feature engineering, semantic embeddings, and machine learning** to determine question similarity.
 
 ---
 
-## 🚀 Features
+## Project Overview
 
-* **Web UI** — Simple browser-based form to check any two questions.
-* **REST API** — `/predict` endpoint for programmatic access.
-* **Semantic Similarity** — Uses **SBERT (all-MiniLM-L6-v2)** for deep sentence embeddings.
-* **Rich Feature Engineering** — Fuzzy matching, character/word set ratios, longest common substring, and more.
-* **Fast Inference** — Pre-trained model loaded via `joblib` for low-latency predictions.
+Quora receives millions of questions from users. Many of these questions are duplicates or semantically similar. Detecting duplicate questions helps improve content quality and user experience.
+
+This project builds a **duplicate question detection system** using the **Quora Question Pairs dataset** and applies multiple NLP techniques to identify semantic similarity between question pairs.
 
 ---
 
-## 🧠 How It Works
+## Features
 
-The system processes question pairs through a multi-stage pipeline:
-
-### 1. Preprocessing
-Both questions are cleaned by converting to lowercase, stripping HTML tags, and normalizing special characters to ensure consistency.
-
-### 2. Feature Extraction
-18 features are extracted per pair to capture both surface-level and semantic differences:
-
-| Category | Features Included |
-| :--- | :--- |
-| **Fuzzy Ratios** | `fuzz_ratio`, `partial_ratio`, `token_sort_ratio`, `token_set_ratio` |
-| **Length Metrics** | `abs_len_diff`, `mean_len` |
-| **Overlap Scores** | `cwc_min/max`, `csc_min/max`, `ctc_min/max` |
-| **Structural** | `first_word_eq`, `last_word_eq`, `longest_substr_ratio` |
-| **Deep Learning** | `sbert_cosine`, `sbert_dot`, `sbert_absdiff` |
-
-
-
-### 3. Classification
-These features are passed to a pre-trained classifier (`quora_best_model.pkl`) which returns a prediction on whether the pair is a duplicate or not.
+- Text preprocessing and cleaning
+- Feature engineering using multiple similarity techniques
+- Fuzzy string matching
+- Semantic similarity using **Sentence Transformers (SBERT)**
+- Machine Learning model for classification
+- FastAPI REST API for prediction
+- Simple web interface for user input
 
 ---
 
-## 🛠️ Installation & Setup
+## Tech Stack
 
-1. **Clone the repository**
-   ```bash
-   git clone [https://github.com/yourusername/quora-duplicate-checker.git](https://github.com/yourusername/quora-duplicate-checker.git)
-   cd quora-duplicate-checker
+**Programming Language**
+- Python
+
+**Libraries**
+- Pandas
+- NumPy
+- Scikit-learn
+- Sentence Transformers
+- FuzzyWuzzy
+- BeautifulSoup
+- TensorFlow
+
+**Backend Framework**
+- FastAPI
+
+**Deployment Tools**
+- Uvicorn
+
+---
+
+## Dataset
+
+The project uses the **Quora Question Pairs dataset**, which contains pairs of questions and a label indicating whether they are duplicates.
+
+Dataset contains:
+
+- Question 1
+- Question 2
+- Duplicate label (0 or 1)
+
+Source:
+https://www.kaggle.com/c/quora-question-pairs
+
+---
+
+## Feature Engineering
+
+Several handcrafted and semantic features were used:
+
+### Text Similarity Features
+- Fuzzy ratio
+- Partial fuzzy ratio
+- Token sort ratio
+- Token set ratio
+
+### Length Based Features
+- Absolute length difference
+- Mean question length
+
+### Word Matching Features
+- First word match
+- Last word match
+- Word overlap ratio
+
+### Character Similarity
+- Character set overlap
+- Character total counts
+
+### Semantic Features
+- SBERT cosine similarity
+- SBERT dot product similarity
+- SBERT absolute difference
+
+### Substring Feature
+- Longest common substring ratio
+
+Total features used: **18**
+
+---
+
+## Model
+
+The final trained model is saved using **Joblib** and used during inference.
+
+Pipeline:
